@@ -1,0 +1,8 @@
+#!/bin/bash
+echo "Бэкап базы 1 начат"
+#mysqldump -u'база_данных' база_данных -p'пароль_базы_данных' > имя_дампа.sql
+mysqldump -u'dbuser' -p'pass' dbname > ~/.backdb/DUMPdbname$
+
+#tar cf имя_архива.tar имя_директории
+echo "Создаем общий архив"
+tar cf fulldump.tar .backdb
