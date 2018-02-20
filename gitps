@@ -1,0 +1,47 @@
+#!/bin/bash
+#bash gitps.sh site user
+if [ -z $1 ] ; then
+echo «Do not set your domain name.»
+exit 1 ; fi
+if [ -z $2 ] ; then
+username='im'
+echo «Do not set your user name. Default name is ${username}»  ; fi
+if [ ! -d ~/public_html/$1/ ]; then
+echo '«Site directory noexist! Script stoped.»'
+exit 1; fi
+if [ -d ~/public_html/$1/.git/ ]; then
+echo '«Git directory exist, script stoped.»'
+exit 1; fi
+
+#git prepare
+ipsrv='192.168.0.1'
+sitename=$1
+cd /home/$username/public_html/$sitename
+git init
+git config receive.denyCurrentBranch ignore
+
+touch .git/hooks/post-receive
+cat << EOF > .git/hooks/post-receive
+#!/bin/sh
+cd ..
+GIT_DIR='.git'
+git reset --hard
+EOF
+chmod +x .git/hooks/post-receive
+
+touch ./readme.txt
+cat <<EOF2 > readme.txt
+Project name ${sitename}.
+EOF2
+
+cd /home/$username/public_html
+
+echo ""
+echo "«First webdev»"
+echo '  «git init»'
+echo '  «git add . && git commit -m "commit subject about change"»'
+echo "  «git remote add --track master origin ssh://${username}@${ipsrv}/~/public_html/${sitename}/.git»"
+echo '  «git push»'
+echo ''
+echo '«Other webdev»'
+echo "  «git clone ssh://${username}@${ipsrv}/~/public_html/${sitename}/.git .»"
