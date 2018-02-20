@@ -5,11 +5,19 @@ echo «Do not set your domain name.»
 exit 1 ; fi
 if [ -z $2 ] ; then
 username='im'
-echo «Do not set your user name.» ; fi
+echo «Do not set your user name. Default name is ${username}» ; fi
+if [ ! -d ~/$1/ ]; then
+echo '«Site directory noexist! Script stoped.»'
+exit 1; fi
+if [ -d ~/$1/.git/ ]; then
+echo '«Git directory exist, script stoped.»'
+exit 1; fi
 
 #git prepare
 ipsrv='192.168.0.1'
 sitename=$1
+# $u is first character in username
+# u=$(echo $username | sed 's/^\(.\).*/\1/')
 cd /home/$username/public_html/$1
 git init
 git config receive.denyCurrentBranch ignore
@@ -29,5 +37,6 @@ firstcommit
 EOF
 
 git add . && git commit -m "commit subject about change"
-echo "git clone ssh://${username}@${ipsrv}/~/public_html/${sitename}/.git ."
 cd /home/$username/public_html
+echo "git clone ssh://${username}@${ipsrv}/~/public_html/${sitename}/.git ."
+
