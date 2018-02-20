@@ -6,10 +6,10 @@ exit 1 ; fi
 if [ -z $2 ] ; then
 username='im'
 echo «Do not set your user name. Default name is ${username}» ; fi
-if [ ! -d ~/$1/ ]; then
+if [ ! -d ~/public_html/$1/ ]; then
 echo '«Site directory noexist! Script stoped.»'
 exit 1; fi
-if [ -d ~/$1/.git/ ]; then
+if [ -d ~/public_html/$1/.git/ ]; then
 echo '«Git directory exist, script stoped.»'
 exit 1; fi
 
